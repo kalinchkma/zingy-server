@@ -1,0 +1,10 @@
+[package]
+name = "axum_server_copy_1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = {version = "1.40.0", features = ["full"]}
+axum = "0.7.5"
+dotenv = "0.15.0"
+sqlx = "0.8.2"
