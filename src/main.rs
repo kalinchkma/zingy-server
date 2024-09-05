@@ -10,7 +10,7 @@ async fn main() {
     let port = env::var("PORT").expect("PORT is needed to run the server");
     let host = env::var("HOST").expect("HOST is needed to run the the server");
 
-    let host_address: SocketAddr= format!("{host}:{port}").parse().expect("Canno make an address form given host and port");
+    let host_address: SocketAddr= format!("{host}:{port}").parse().expect("Cannot make an address form given host and port");
 
     let app = Router::new().route("/", get(|| async {"Hello world"}));
 
@@ -19,6 +19,4 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(host_address).await.unwrap();
     axum::serve(listener, app).await.unwrap();
     // endregion:  -- start server
-
-    
 }
