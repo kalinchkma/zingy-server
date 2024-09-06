@@ -28,5 +28,5 @@ pub mod layers;
 
 /// - Log module
 /// - Server logging functionality gose here
-pub mod log;
+pub mod logs;
 
