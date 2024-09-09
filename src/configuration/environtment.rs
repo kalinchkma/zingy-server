@@ -31,7 +31,9 @@ impl Environtment {
         let db_name = env::var(db_name).expect("Database name is required");
 
         // parse database host
-        let db_host = env::var(db_host).expect("Database host is required");
+        let db_host = env::var(db_host).unwrap_or_else(|_| {
+            "127.0.0.1".to_string()
+        });
 
         // create database connection
         let db_connection_string = format!("postgres://{db_user}:{db_password}@{db_host}/{db_name}");   
