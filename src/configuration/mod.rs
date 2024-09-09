@@ -10,3 +10,6 @@ pub mod database;
 /// - This module manages loggins configurations
 /// - Including log levels, file paths, and format settings
 pub mod logging;
+
+// - This module responsible for mananging environtment entities
+pub mod environtment;

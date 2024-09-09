@@ -1,4 +1,6 @@
 
+// - Main application startup
+pub mod startup;
 
 /// - Configuration module
 /// - Server related configuration gose here

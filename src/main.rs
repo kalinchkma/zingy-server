@@ -1,22 +1,23 @@
+use zingy::startup;
 
-use axum::{routing::get, Router};
-use dotenv::dotenv;
-use std::{env, net::SocketAddr};
+
+
 
 #[tokio::main]
 async fn main() {
-    dotenv().ok();
+    // get application
+    let (envs, app) = startup::application();
 
-    let port = env::var("PORT").expect("PORT is needed to run the server");
-    let host = env::var("HOST").expect("HOST is needed to run the the server");
+    // create tcp listener
+    let listener = tokio::net::TcpListener::bind(envs.address).await.unwrap_or_else(|e| {
+        panic!("Error {:?}",e);
+    });
 
-    let host_address: SocketAddr= format!("{host}:{port}").parse().expect("Cannot make an address form given host and port");
+    println!("Server running on {:?}", envs.address);
 
-    let app = Router::new().route("/", get(|| async {"Hello world"}));
+    // run the server
+    axum::serve(listener, app).await.unwrap_or_else(|e| {
+        panic!("Error {:?}", e)
+    })
 
-    // region:     -- start server
-    println!("Listening on port {}", host_address);
-    let listener = tokio::net::TcpListener::bind(host_address).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
-    // endregion:  -- start server
 }
