@@ -13,7 +13,9 @@ impl Environtment {
         dotenv().ok();
         
         // parse port from environtment variable
-        let port = env::var(port_key).expect("Port environtment variable is required");
+        let port = env::var(port_key).unwrap_or_else(|_| {
+            "6969".to_string()
+        });
 
         // format address string
         let address: SocketAddr = format!("0.0.0.0:{port}").parse().expect("Cannot create socket address from envs");
