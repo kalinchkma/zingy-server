@@ -1,6 +1,6 @@
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
-
+#[derive(Debug)]
 pub struct DatabaseConfiguration {
     connection_string: String,
     max_pool_number: u32

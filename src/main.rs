@@ -1,19 +1,19 @@
 use zingy::startup;
 
 
-
-
 #[tokio::main]
 async fn main() {
     // get application
-    let (envs, app) = startup::application();
+    let (address, app) = startup::application().await.unwrap_or_else(|e| {
+        panic!("Error: {:?}", e)
+    });
 
     // create tcp listener
-    let listener = tokio::net::TcpListener::bind(envs.address).await.unwrap_or_else(|e| {
+    let listener = tokio::net::TcpListener::bind(address).await.unwrap_or_else(|e| {
         panic!("Error {:?}",e);
     });
 
-    println!("Server running on {:?}", envs.address);
+    println!("Server running on {:?}", address);
 
     // run the server
     axum::serve(listener, app).await.unwrap_or_else(|e| {
