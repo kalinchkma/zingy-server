@@ -4,9 +4,8 @@ pub struct Environtment {
    pub address: SocketAddr,
 }
 
-
 impl Environtment {
-    pub fn new(port_key: &str) -> Self {
+    pub fn new(port_key: &str, db_user_key: &str, db_password_key: &str, db_host: &str) -> Self {
         use dotenv::dotenv;
         use std::env;
         
