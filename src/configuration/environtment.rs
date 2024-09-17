@@ -8,10 +8,7 @@ pub struct Environtment {
 
 impl Environtment {
     pub fn new(port_key: &str, db_user: &str, db_password: &str, db_host: &str,db_name: &str, max_pool: &str,) -> Self {
-        use dotenv::dotenv;
         use std::env;
-        
-        dotenv().ok();
         
         // parse port from environtment variable
         let port = env::var(port_key).unwrap_or_else(|_| {

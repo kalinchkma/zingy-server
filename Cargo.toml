@@ -8,5 +8,8 @@ tokio = {version = "1.40.0", features = ["full"]}
 sqlx = { version = "0.8.2", features = [ "runtime-tokio-native-tls" , "postgres" ] }
 
 axum = "0.7.5"
-dotenv = "0.15.0"
+askama = "0.12.1"
+toml = "0.8.19"
+serde = "1.0.210"
+serde_derive = "1.0.210"
 
