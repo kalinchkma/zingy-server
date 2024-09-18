@@ -1,5 +1,30 @@
-use std::net::SocketAddr;
+use std::{fs, net::SocketAddr, process::exit};
+use serde_derive::Deserialize;
+use toml;
 
+use super::CONFIG_PATH;
+
+#[derive(Deserialize)]
+struct EnvirontmentData {
+    database: Database,
+    env: Env
+}
+
+#[derive(Deserialize)]
+struct Database {
+    db_user: String,
+    db_password: String,
+    db_host: String,
+    db_name: String,
+    db_max_pool: u32
+}
+
+#[derive(Deserialize)]
+struct Env {
+    port: i32
+}
+
+#[derive(Debug)]
 pub struct Environtment {
    pub address: SocketAddr,
    pub db_connection_string: String,
@@ -7,45 +32,38 @@ pub struct Environtment {
 }
 
 impl Environtment {
-    pub fn new(port_key: &str, db_user: &str, db_password: &str, db_host: &str,db_name: &str, max_pool: &str,) -> Self {
-        use std::env;
+    pub fn new() -> Self {
+        // read environtment form path of CONFIG_PATH as string
+        let env_contents = match fs::read_to_string(CONFIG_PATH) {
+            Ok(content) => {
+               content
+            },
+            Err(e) => {
+                eprintln!("{}", e);
+                exit(1)
+            }
+        };
         
-        // parse port from environtment variable
-        let port = env::var(port_key).unwrap_or_else(|_| {
-            "6969".to_string()
-        });
+        // convert environtment string to serialize environtment data
+        let envs: EnvirontmentData = match toml::from_str(&env_contents) {
+            Ok(d) => d,
+            Err(e) => {
+                eprintln!("{}", e);
+                exit(1)
+            }
+        }; 
 
-        // format address string
-        let address: SocketAddr = format!("0.0.0.0:{port}").parse().expect("Cannot create socket address from envs");
+        // format the address string
+        let address: SocketAddr = format!("0.0.0.0:{}", envs.env.port).parse().expect("Connot create socket address fron configuration");
 
-        // parse database user
-        let db_user = env::var(db_user).expect("Database user name is required");    
-
-        // parse database password
-        let db_password = env::var(db_password).expect("Database password is required");
-
-        // parse database name
-        let db_name = env::var(db_name).expect("Database name is required");
-
-        // parse database host
-        let db_host = env::var(db_host).unwrap_or_else(|_| {
-            "127.0.0.1".to_string()
-        });
-
-        // create database connection
-        let db_connection_string = format!("postgres://{db_user}:{db_password}@{db_host}/{db_name}");   
-
-        // parse database max pool number
-        let db_max_pool = env::var(max_pool).unwrap_or_else(|_| {
-            "5".to_string()
-        }).parse::<u32>().expect("Cannot parse a database max pool");
+        // create database connection string
+        let db_connection_string = format!("postgres://{}:{}@{}/{}",envs.database.db_user, envs.database.db_password, envs.database.db_host, envs.database.db_name);
 
         Self {
             address,
             db_connection_string,
-            db_max_pool    
+            db_max_pool: envs.database.db_max_pool
         }
-        
     }
 }
 

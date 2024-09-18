@@ -9,15 +9,15 @@ async fn main() {
     });
 
     // create tcp listener
-    // let listener = tokio::net::TcpListener::bind(address).await.unwrap_or_else(|e| {
-    //     panic!("Error {:?}",e);
-    // });
+    let listener = tokio::net::TcpListener::bind(&address).await.unwrap_or_else(|e| {
+        panic!("Error {:?}",e);
+    });
 
-    // println!("Server running on {:?}", address);
+    println!("Server running on {:?}", address);
 
     // run the server
-    // axum::serve(listener, app).await.unwrap_or_else(|e| {
-    //     panic!("Error {:?}", e)
-    // })
+    axum::serve(listener, app).await.unwrap_or_else(|e| {
+        panic!("Error {:?}", e)
+    })
 
 }

@@ -1,7 +1,9 @@
-[config]
-PORT=6969
-DB_USER="zingy"
-DB_PASSWORD="admin"
-DB_HOST="127.0.0.1"
-DB_NAME="zingy"
-DB_MAX_POOL=5
+[env]
+port=6969
+
+[database]
+db_user="zingy"
+db_password="admin"
+db_host="127.0.0.1"
+db_name="zingy"
+db_max_pool=5

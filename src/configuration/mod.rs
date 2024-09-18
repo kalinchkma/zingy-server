@@ -3,6 +3,9 @@
 /// application parameters and environtment-specific settings
 /// -
 
+/// Configuration tomal file
+pub const CONFIG_PATH: &str = "Config.toml";
+
 /// - This module contains configuration settings related to the database
 /// - Such as connection strings, pool sizes, and timeout settings. 
 pub mod database;
