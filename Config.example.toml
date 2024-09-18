@@ -1,0 +1,7 @@
+[config]
+PORT=6969
+DB_USER="zingy"
+DB_PASSWORD="admin"
+DB_HOST="127.0.0.1"
+DB_NAME="zingy"
+DB_MAX_POOL=5

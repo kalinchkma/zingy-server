@@ -24,14 +24,14 @@ struct Config {
 // main server stratup function
 pub async fn application() -> Result<(String, Router), sqlx::Error> {
     // get environtment variables
-    // let envs = Environtment::new(
-    //     "PORT", 
-    //     "DB_USER",
-    //     "DB_PASSWORD",
-    //     "DB_HOST",
-    //     "DB_NAME",
-    //     "DB_MAX_POOL"
-    // );
+    let envs = Environtment::new(
+        "PORT", 
+        "DB_USER",
+        "DB_PASSWORD",
+        "DB_HOST",
+        "DB_NAME",
+        "DB_MAX_POOL"
+    );
 
     // connect the database
     // let pool = DatabaseConfiguration::new(envs.db_connection_string, envs.db_max_pool).connect().await?;
