@@ -1,6 +1,5 @@
 use zingy::startup;
 
-
 #[tokio::main]
 async fn main() {
     // get application

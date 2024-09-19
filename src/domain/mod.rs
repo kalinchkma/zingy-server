@@ -4,7 +4,6 @@
 // ensuring that business rules are the central concern
  
 
-
 // - Contains the domain entities that represent the core data and concepts of the application
 // - These entities are typically structs that define 
 // - the essential data attribites and methods related to the domain

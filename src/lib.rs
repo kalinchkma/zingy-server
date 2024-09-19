@@ -17,9 +17,12 @@ pub mod logs;
 /// - Domain
 pub mod domain;
 
-
 /// - infrastructure
 pub mod infrastructure;
+
+/// - features
+/// This is the module where we write every actual business logic
+pub mod features;
 
 /// - interface
 pub mod interface;
