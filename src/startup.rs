@@ -2,6 +2,7 @@ use std::net::SocketAddr;
 
 use askama_axum::Template;
 use axum::{http::StatusCode, response::{IntoResponse, Html}, routing::get, Router};
+use tower_http::services::ServeDir;
 
 use crate::configuration::{database::DatabaseConfiguration, environtment::Environtment};
 
@@ -34,6 +35,23 @@ async fn index() -> impl IntoResponse {
     (StatusCode::OK, Html(idx.render().unwrap()))
 }
 
+#[derive(Template)]
+#[template(path = "test/test.html")]
+struct Test<'a> {
+    name: &'a str
+}
+async  fn test() -> impl IntoResponse {
+    let t = Test {
+        name: "Mr hunter"
+    };
+    (StatusCode::OK, Html(t.render().unwrap()))
+}
+
+// static file servering
+fn static_route() -> Router {
+    Router::new().nest_service("/static", ServeDir::new("./public"))
+}
+
 // main server stratup function
 pub async fn application() -> Result<(SocketAddr, Router), sqlx::Error> {
     // get environtment variables
@@ -46,7 +64,9 @@ pub async fn application() -> Result<(SocketAddr, Router), sqlx::Error> {
     let app: Router = Router::new()
         .route("/", get(|| async { "Hello world" }))
         .route("/home", get(home))
-        .route("/index", get(index));
+        .route("/index", get(index))
+        .route("/test", get(test))
+        .merge(static_route());
 
     // return 
     Ok((envs.address, app))
